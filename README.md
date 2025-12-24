@@ -90,7 +90,7 @@ from transformers import pipeline
 
 # Load your fine-tuned model
 
-ner_model = pipeline("ner", model="./path-to-your-model", aggregation_strategy="simple")
+ner_model = pipeline("ner", model="bert-base-cased", aggregation_strategy="simple")
 
 text = "The Burj Khalifa is located in Dubai and was built by Emaar Properties."
 
