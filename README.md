@@ -6,8 +6,6 @@ token classification to identify and label entities like persons, locations, and
 
 Dataset Source: [unimelb-nlp/wikiann on Hugging Face Datasets] 
 
-Model Link: https://huggingface.co/google-bert/bert-base-multilingual-cased
-
 🚀 Key Features
 
 Fine‑tuned BERT (bert‑base‑cased) model for token‑level entity recognition.
