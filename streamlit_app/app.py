@@ -1,5 +1,19 @@
 import streamlit as st
 import requests
+import threading
+from api.main import app as fastapi_app
+import uvicorn
+
+def run_fastapi():
+    uvicorn.run(
+        fastapi_app,
+        host="0.0.0.0",
+        port=8000,
+        log_level="warning"
+    )
+# Start FastAPI server in a separate thread
+threading.Thread(target=run_fastapi, daemon=True).start()
+
 
 # FastAPI endpoint
 API_URL = "http://127.0.0.1:8000/predict"
