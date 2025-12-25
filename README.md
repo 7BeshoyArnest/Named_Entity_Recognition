@@ -119,5 +119,4 @@ Containerized FastAPI service
 
 Authentication & rate limiting
 
-📌
 
