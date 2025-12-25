@@ -108,3 +108,16 @@ Contributions and issues are welcome!
 
 Please fork the repository and create pull requests for improvements.
 
+Note:
+For portfolio and demo purposes, the FastAPI backend is run within the Streamlit application process.
+
+Future Improvements:
+
+Separate backend deployment
+
+Containerized FastAPI service
+
+Authentication & rate limiting
+
+📌
+
