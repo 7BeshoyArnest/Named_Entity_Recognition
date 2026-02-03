@@ -1,122 +1,234 @@
-Named Entity Recognition (NER) with BERT Fine‑Tuning
+Named Entity Recognition (NER) with BERT Fine-Tuning
 
-A Named Entity Recognition (NER) system fine‑tuned from a pretrained BERT model (bert‑base‑cased) on the WikiANN English dataset using the Hugging Face Transformers and Datasets libraries. This project performs 
+A complete end-to-end Named Entity Recognition (NER) system fine-tuned from a pretrained BERT (bert-base-cased) model on the WikiANN English dataset, 
 
-token classification to identify and label entities like persons, locations, and organizations in text.
+built using Hugging Face Transformers & Datasets, and deployed with FastAPI + Streamlit + Docker (GPU-ready).
 
-Dataset Source: [unimelb-nlp/wikiann on Hugging Face Datasets] 
+This project performs token-level classification to identify entities such as Persons, Organizations, and Locations, and exposes the model through a modern inference API and interactive web interface.
 
 🚀 Key Features
 
-Fine‑tuned BERT (bert‑base‑cased) model for token‑level entity recognition.
+Fine-tuned BERT (bert-base-cased) for English NER
 
-Uses the WikiANN English dataset — a Wikipedia‑based NER corpus in IOB2 tagging format. 
+Trained on WikiANN (PAN-X) English dataset with IOB2 tagging
 
-Fully customizable training pipeline supporting evaluation metrics such as F1, precision, and recall.
+Full training, evaluation, and inference pipeline
 
-Modular scripts for preprocessing, training, evaluation, saving, and inference.
+Metrics: Precision, Recall, F1-Score, Accuracy using seqeval
 
-Ready for integration with inference APIs or downstream NLP systems.
+FastAPI backend for model inference
+
+Streamlit web application for interactive usage
+
+Dockerized & GPU-ready (CUDA 12.1, PyTorch 2.5.1)
+
+Model published on Hugging Face Hub
+
+Clean, modular, production-aware project structure
 
 📂 Dataset Information
 
-Dataset Link: https://huggingface.co/datasets/unimelb-nlp/wikiann
+Dataset: WikiANN (PAN-X)
 
-The WikiANN dataset classifies tokens into the following entity types:
+Source: Hugging Face Datasets
 
-LOC: Location
+https://huggingface.co/datasets/unimelb-nlp/wikiann
 
-ORG: Organization
+Entity Labels:
 
-PER: Person
+PER — Person
 
-O: Outside (No entity)
+ORG — Organization
 
-The dataset is structured with IOB2 tagging (e.g., B-PER for the beginning of a person's name and I-PER for subsequent tokens).
+LOC — Location
 
-Split,Samples
+O — Outside (non-entity)
 
-Train,"20,000"
+Tagging Format:
 
-Validation,"10,000"
+IOB2 (e.g., B-PER, I-PER, B-ORG, I-ORG)
 
-Test,"10,000"
+Dataset Split (Re-balanced)
+
+| Split      | Samples |
+
+| ---------- | ------- |
+
+| Train      | 30,000  |
+
+| Validation | 5,000   |
+
+| Test       | 5,000   |
 
 🛠️ Tech Stack
 
 Language: Python
 
-Deep Learning: PyTorch, Transformers (Hugging Face)
+Deep Learning: PyTorch, Hugging Face Transformers
 
-Data Processing: Datasets, NumPy
+Data Processing: Hugging Face Datasets, NumPy
 
 Evaluation: seqeval, evaluate
 
-📊 Performance Results
+API: FastAPI, Uvicorn
 
-Based on the fine-tuning process, the model achieves high accuracy across standard NER categories.
+UI: Streamlit
 
-Metric,Score
+Experiment Tracking: Weights & Biases (W&B)
 
-Accuracy,~93.0%
+Deployment: Docker, NVIDIA CUDA
 
-F1-Score,~84.2%
+📊 Model Performance (Test Set)
 
-Precision,~83.3%
+| Metric    | Score  |
 
-Recall,~85.2%
+| --------- | ------ |
 
-Note: Metrics may vary slightly based on final hyperparameter tuning (Learning Rate: 2e-5, Epochs: 3, Batch Size: 32).
+| Accuracy  | ~93.0% |
 
-Installation & Usage
+| F1-Score  | ~84.3% |
 
-1-Clone the repository:
+| Precision | ~83.0% |
+
+| Recall    | ~85.6% |
+
+Training Configuration
+
+Learning Rate: 2e-5
+
+Epochs: 3
+
+Optimizer: AdamW
+
+Model: bert-base-cased
+
+Metrics may vary slightly depending on random seed and hardware.
+
+🤖 Model Access
+
+7beshoyarnest/bert-finetuned-ner
+
+https://huggingface.co/7beshoyarnest/bert-finetuned-ner
+
+📦 Project Structure
+
+Named_Entity_Recognition/
+
+│
+
+├── api/
+
+│   ├── __init__.py
+
+│   └── main.py              # FastAPI inference service
+
+│
+
+├── streamlit_app/
+
+│   └── app.py               # Streamlit UI
+
+│
+
+├── Named_Entity_Recognition.ipynb              # Training & experiments
+
+├── requirements.txt
+
+├── Dockerfile
+
+├── .dockerignore
+
+└── README.md
+
+⚙️ Installation & Usage
+
+1️⃣ Clone the Repository
 
 git clone https://github.com/7BeshoyArnest/Named_Entity_Recognition.git
 
 cd Named_Entity_Recognition
 
-2-Install requirements: 
-
-pip install transformers datasets evaluate seqeval torch
+2️⃣ Install Dependencies
 
 pip install -r requirements.txt
 
-3-Run Inference:
+🔍 Inference Examples
+
+Option 1: Hugging Face Pipeline
 
 from transformers import pipeline
 
-# Load your fine-tuned model
-
-ner_model = pipeline("ner", model="bert-base-cased", aggregation_strategy="simple")
+ner = pipeline(
+    "token-classification",
+    model="7beshoyarnest/bert-finetuned-ner",
+    aggregation_strategy="simple"
+)
 
 text = "The Burj Khalifa is located in Dubai and was built by Emaar Properties."
 
-entities = ner_model(text)
+print(ner(text))
 
-print(entities)
+Option 2: FastAPI + Streamlit (Local)
 
-OR Usin the Streamlit_app:
+# Start the API
 
-firstly: run the api using python -m uvicorn api.main:app --reload
+uvicorn api.main:app --reload
 
-secondly: run the streamlit app using python -m streamlit run streamlit_app/app.py
+# Run the Streamlit app
+
+streamlit run streamlit_app/app.py
+
+Open:
+
+http://localhost:8502
+
+🐳 Docker (GPU-Enabled)
+
+Build Image
+
+docker build -t ner-streamlit .
+
+Run Container
+
+docker run --gpus all -p 8502:8502 ner-streamlit
+
+Requires NVIDIA Container Toolkit for GPU support.
+
+🧠 Architecture Note
+
+For portfolio and demo purposes, the FastAPI backend is launched inside the Streamlit process using a background thread.
+
+In production environments, FastAPI should be deployed as a separate microservice.
 
 🧑‍💻 Contributing
 
-Contributions and issues are welcome!
+Contributions are welcome!
 
-Please fork the repository and create pull requests for improvements.
+Fork the repository
 
-Note:
-For portfolio and demo purposes, the FastAPI backend is run within the Streamlit application process.
+Create a feature branch
 
-Future Improvements:
+Submit a pull request
 
-Separate backend deployment
+🔮 Future Improvements
 
-Containerized FastAPI service
+Separate FastAPI & Streamlit services (microservices)
+
+Docker Compose deployment
 
 Authentication & rate limiting
+
+Batch inference & file upload
+
+Multilingual / Arabic NER support
+
+Model optimization & quantization
+
+
+
+
+
+
+
 
 
