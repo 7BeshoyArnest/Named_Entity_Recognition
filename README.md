@@ -134,6 +134,8 @@ Named_Entity_Recognition/
 
 ├── requirements.txt
 
+├── requirements-docker.txt
+
 ├── Dockerfile
 
 ├── .dockerignore
