@@ -192,7 +192,7 @@ docker build -t ner-streamlit .
 
 Run Container
 
-docker run --gpus all -p 8502:8502 ner-streamlit
+docker run -p 8502:8502 --name ner-streamlit-container ner-streamlit
 
 Requires NVIDIA Container Toolkit for GPU support.
 
